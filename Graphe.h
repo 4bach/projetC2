@@ -1,7 +1,7 @@
 #ifndef __GRAPHE_H__
 #define __GRAPHE_H__
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "Struct_Liste.h"
 
 typedef struct{
