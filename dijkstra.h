@@ -1,19 +1,49 @@
 #ifndef _DIJKSTRA_H
 #define _DIJKSTRA_H
-#define CAPACITE_MAX 50
+#define lNl 20
+
+
+typedef struct  {
+  int u;
+  double dist;
+} Tas_elem;
 
 typedef struct {
-	
-	int n;
-	float tab[CAPACITE_MAX+1];
-	
-	
-	
-	
-}Tas;
+  int nb_tot;
+  int nb_elem;
+  Tas_elem* *elem;
+  int* tab;
+} Tas;
 
 
 
 
+int racine(void);
+int hasPere(int i);
 
+int filsGauche(int i);
+int filsDroit(int i);
+int pere(int i);
+void init(Tas* t);
+
+int taille(Tas* t);
+int isNoeud(Tas* t, int i);
+
+int hasFilsdroit(Tas* t, int i);
+int hasFilsgauche(Tas* t, int i);
+int Estfeuille(Tas* t, int i);
+void echanger(Tas* t, int i,int j);
+void monter(Tas* t,int i);
+int plusPetitfils(Tas* t,int i);
+void descendre(Tas* t,int i);
+Tas_elem* min(Tas* t);
+void insert(Tas *t,float dist,int s);
+Tas_elem* suppMin(Tas* t);
+int recherche(Tas* t,int s);
+void supp_elem(Tas*t, int i);
+void init_lambda(int taille,double* lambda);
+void init_pred(int taille,int* pred);
+void init_marque(int taille,int* marque);
+
+void Dijkstra(Graphe* G,int u,int* prev,double* lambda);
 #endif
