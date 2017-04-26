@@ -36,15 +36,8 @@ int main(int argc,char**argv){
 
   fclose(f);
   int cpt;
-  cpt = nbarcsmin( &G, 10, 15);
-  ListeEntier chemin = cheminuv( &G, 3, 16 );
-  Liste_chemin* tmp = chemin_commodites( &G );
-  //ecrire_commodites( &G, filenamencha );
-
-  int longueur;
-  longueur = calcul_longueur( filenamencha );
-  printf( "LONGUEUR = %d\n", longueur );
-  //afficheGrapheSVG(&G,filename);
+  printf("LE PLUS COURT CHEMIN EST : %d\n", cpt );
+  cpt = nbarcsmin( &G, 14, 15);
 
 
   return 0;

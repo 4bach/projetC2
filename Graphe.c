@@ -1,10 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include"Graphe.h"
-#include"SVGwriter.h"
-#include"entree_sortie.h"
-#include"Struct_Liste.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "Graphe.h"
+#include "SVGwriter.h"
+#include "entree_sortie.h"
+#include "Struct_Liste.h"
+#include "Struct_File.h"
 
 
 
@@ -137,5 +138,4 @@ void afficheGrapheSVG(Graphe *G, char* nomInstance){
   SVGfinalize(&svg);
 
 }
-
 
