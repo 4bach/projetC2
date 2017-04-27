@@ -39,7 +39,7 @@ int plusPetitfils(Tas* t,int i);
 void descendre(Tas* t,int i);
 Tas_elem* min(Tas* t);
 void insert(Tas *t,double dist,int s);
-Tas_elem* suppMin(Tas* t);
+int suppMin(Tas* t);
 int recherche(Tas* t,int s);
 void supp_elem(Tas*t, int i);
 void init_lambda(int taille,double* lambda,int s);

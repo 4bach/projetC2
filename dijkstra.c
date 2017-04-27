@@ -66,6 +66,7 @@ int Estfeuille(Tas* t, int i){
 
 void echanger(Tas* t, int i,int j){
 	
+	if((i<= t->nb_tot && i>0) && (j<=t->nb_tot && j>0)){
 	double tmp=t->elem[i]->dist;
 	int Tmp=t->elem[i]->u;
 	/* maj du tableau de sommet*/
@@ -78,7 +79,7 @@ void echanger(Tas* t, int i,int j){
 	t->elem[j]->dist=tmp;
 	t->elem[j]->u=Tmp;
 }
-
+}
 void monter(Tas* t,int i){
 	if(i<=1) return;
 	
@@ -89,6 +90,8 @@ void monter(Tas* t,int i){
 	}
 }
 int plusPetitfils(Tas* t,int i){
+	
+	if(Estfeuille(t,i)){
 	if(! hasFilsdroit(t,i)){
 		return filsGauche(i);
 	}
@@ -96,6 +99,10 @@ int plusPetitfils(Tas* t,int i){
 		int fg=filsGauche(i);
 		int fd=filsDroit(i);
 		return (t->elem[fg]->dist < t->elem[fd]->dist)?fg:fd;
+	}
+    }
+    else{
+		return i;
 	}
 	
 }
@@ -106,13 +113,13 @@ int Tasvide(Tas* t){
 }
 
 void descendre(Tas* t,int i){
-	if(Estfeuille(t,i))return;
-	
+	if(Estfeuille(t,i) || i<=0){return;}
+	else{
 	int fils=plusPetitfils(t,i);
 	if(t->elem[i]->dist>t->elem[fils]->dist){
 		echanger(t,fils,i);
 		descendre(t,fils);
-	}
+	}}
 }
 
 Tas_elem* min(Tas* t){
@@ -120,8 +127,7 @@ Tas_elem* min(Tas* t){
 }
 
 void insert(Tas *t,double dist,int s){
-	if (t->nb_elem<t->nb_tot){
-		t->nb_elem++;
+	if (t->nb_elem<=t->nb_tot){
 		Tas_elem* elem=(Tas_elem*)malloc(sizeof(Tas_elem));
 		elem->u=s;
 		elem->dist=dist;
@@ -135,16 +141,18 @@ void insert(Tas *t,double dist,int s){
 	}
 }
 
-Tas_elem* suppMin(Tas* t){
+int suppMin(Tas* t){
 	if(t->nb_elem==0){
 		printf("Tas vide\n");
-		return NULL;
+		return -1;
 	}
-	Tas_elem* min=t->elem[racine()];
-	echanger(t,t->nb_elem,racine());
+	if(t->elem!=NULL){
+	int min=t->elem[0]->u;
+	echanger(t,t->nb_elem,0);
 	t->nb_elem--;
-	descendre(t,racine());
-	return min;
+	descendre(t,0);
+	return min;}
+	return -1;
 }
 
 int recherche(Tas* t,int s){
@@ -201,38 +209,39 @@ void init_tab_som(Tas* t){
 
 void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 	/*initialistation*/
-	
+ 
 	init_lambda(G->nbsom,lambda,u);
-	int marque[G->nbsom];
+	int marque[G->nbsom+1];
 	init_marque(G->nbsom,marque);
 	init_pred(G->nbsom,prev);
 	Tas* t=init_tas(G->nbsom);
-	Tas_elem* min;
+	int min;
 	insert(t,0,u);
 	marque[u]=1;
-
+	
 	/*......*/
 	Sommet* courant_som;
 	Cellule_arete* courant_a;
 	int num_som;
-	while(! Tasvide(t)){
+	while(! Tasvide(t) ){
 		min=suppMin(t);
-		marque[min->u]=1;
-		courant_som=G->T_som[min->u];
+		
+		marque[min]=1;
+		courant_som=G->T_som[min];
 		courant_a=courant_som->L_voisin;
 		while(courant_a){
 			
 			/* pour ne pas se tromper de numero de sommet */
-			if(courant_a->a->v==min->u)
+			if(courant_a->a->v==min)
 				num_som=courant_a->a->u;
 			else
 				num_som=courant_a->a->v;
 			/*....................*/
 			if(marque[num_som]==0){
 				
-				if(lambda[num_som]>lambda[min->u]+courant_a->a->longueur){
-					lambda[num_som]=lambda[min->u]+courant_a->a->longueur;
-					prev[num_som]=min->u;
+				if(lambda[num_som]>lambda[min]+courant_a->a->longueur){
+					lambda[num_som]=lambda[min]+courant_a->a->longueur;
+					prev[num_som]=min;
 					insert(t,num_som,lambda[num_som]);
 					
 				}
