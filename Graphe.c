@@ -9,6 +9,7 @@
 
 
 
+
 void ajout_voisin(Graphe* G, int u, int v){
   Cellule_arete *pca;
   Arete *pa;

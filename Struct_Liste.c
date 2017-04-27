@@ -1,5 +1,5 @@
-#include<stdlib.h>
-#include"Struct_Liste.h"
+#include <stdlib.h>
+#include "Struct_Liste.h"
 
 void Init_Liste(ListeEntier *L){
   *L=NULL;
