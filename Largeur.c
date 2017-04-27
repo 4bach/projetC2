@@ -7,6 +7,7 @@
 #include "Struct_Liste.h"
 #include "Struct_File.h"
 #include "Largeur.h"
+#include "dijkstra.h"
 
 // Calcul du nombre d'arc minimum
 int nbarcsmin(Graphe *G, int u, int v)
@@ -191,7 +192,35 @@ void ecrire_commodites( Graphe* G, char* nomfic )
 	fclose(f1);
 }
 
+//Ecritures de chaque chaine de points dans un fichier
+void ecrire_commodites_dijsktra( Graphe* G, char* nomfic ) 
+{	
+	int cpt;
+  	cpt = nbarcsmin( G, 10, 15);
+	Liste_chemin* liste = chemin_commodites( G );
+	char str[10] = "";
+	FILE* f1;
+	if( ((f1=fopen(nomfic,"r"))!=NULL) ) {
+		remove(nomfic);
+		//return;
+	}
+	if(((f1=fopen(nomfic,"w"))==NULL)){
+		printf("Le fichier %s ne s'ouvre pas\n",nomfic);
+		return;
+	}
+	while( liste ) {
+		ListeEntier points = liste->points;
+		while( points ) {
+			sprintf(str,"%d ",points->u);
+			fprintf(f1,"%s",str);
 
+			points = points->suiv;
+		}
+		fprintf(f1,"-1\n");
+		liste = liste->suiv;
+	}
+	fclose(f1);
+}
 //Retourne l'arrête correpsondant à u et v dans le graphe
 Arete* recherche_arrete( Graphe* G, int u, int v ) {
 	int i;
