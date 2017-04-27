@@ -110,7 +110,25 @@ int main(int argc,char* *argv)
     printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test3, eval3, gamma3, longueur3 );
   }
   else if( chmeth == 2 ) {
+    ecrire_commodites_dijsktra( &G1, test1cha );   
+    ecrire_commodites_dijsktra( &G2, test2cha );
+    ecrire_commodites_dijsktra( &G3, test3cha );
 
+    gamma1 = calcul_largeur( test1cha, &G1 );
+    gamma2 = calcul_largeur( test2cha, &G2 );
+    gamma3 = calcul_largeur( test3cha, &G3 );
+
+    longueur1 = calcul_longueur( test1cha, &G1 );
+    longueur2 = calcul_longueur( test2cha, &G2 );
+    longueur3 = calcul_longueur( test3cha, &G3 );
+
+    eval1 = evaluation_NChaines( gamma1, longueur1, test1 ); 
+    eval2 = evaluation_NChaines( gamma2, longueur2, test2 ); 
+    eval3 = evaluation_NChaines( gamma3, longueur3, test3 ); 
+  
+    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test1, eval1, gamma1, longueur1 );
+    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test2, eval2, gamma2, longueur2 );
+    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test3, eval3, gamma3, longueur3 );
   } 
   else if( chmeth == 3 ) {
 
