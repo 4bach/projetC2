@@ -34,8 +34,13 @@ int main(int argc,char**argv){
   lecture_graphe(&G,f);
 
   fclose(f);
-
+	int prev[G.nbsom];
+	double lambda[G.nbsom];
+	Dijkstra(G,1,prev,lambda);
   afficheGrapheSVG(&G,filename);
+  
+  
+  
 
 
   return 0;

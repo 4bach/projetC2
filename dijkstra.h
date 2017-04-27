@@ -1,3 +1,4 @@
+
 #ifndef _DIJKSTRA_H
 #define _DIJKSTRA_H
 #define lNl 20
@@ -47,4 +48,6 @@ void init_marque(int taille,int* marque);
 void init_tab_som(Tas* t);
 int Tasvide(Tas* t);
 void Dijkstra(Graphe* G,int u,int* prev,double* lambda);
+void affiche_prev(int* prev,int taille);
+void affiche_lambda(double* lambda,int taille);
 #endif

@@ -28,16 +28,17 @@ int filsDroit(int i){
 	return 2*i+1;
 }
 int pere(int i){
-	if (hasPere(i))
+	if (i>1)
 		return i/2;
-	return racine();
+	return -1;
 }
+
 
 Tas* init_tas(int n){
 	Tas* t=(Tas*)malloc(sizeof(Tas));
 	t->nb_tot=n;
 	t->nb_elem=0;
-	t->elem=NULL;
+	t->elem=(Tas_elem**)malloc((n+1)*sizeof(Tas_elem*));
 	t->tab=(int*)malloc((n+1)*sizeof(int));
 	init_tab_som(t);
 	return t;
@@ -79,7 +80,7 @@ void echanger(Tas* t, int i,int j){
 }
 
 void monter(Tas* t,int i){
-	if(! hasPere(i)) return;
+	if(i<=1) return;
 	
 	int papa=pere(i);
 	if(t->elem[papa]->dist >t->elem[i]->dist){
@@ -209,14 +210,62 @@ void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 	Tas_elem* min;
 	insert(t,0,u);
 	marque[u]=1;
+
+	/*......*/
+	Sommet* courant_som;
+	Cellule_arete* courant_a;
+	int num_som;
 	while(! Tasvide(t)){
 		min=suppMin(t);
-		marquer[min->u]=1;
+		marque[min->u]=1;
+		courant_som=G->T_som[min->u];
+		courant_a=courant_som->L_voisin;
+		while(courant_a){
+			
+			/* pour ne pas se tromper de numero de sommet */
+			if(courant_a->a->v==min->u)
+				num_som=courant_a->a->u;
+			else
+				num_som=courant_a->a->v;
+			/*....................*/
+			if(marque[num_som]==0){
+				
+				if(lambda[num_som]>lambda[min->u]+courant_a->a->longueur){
+					lambda[num_som]=lambda[min->u]+courant_a->a->longueur;
+					prev[num_som]=min->u;
+					insert(t,num_som,lambda[num_som]);
+					
+				}
+			}
+			courant_a=courant_a->suiv;
+		}
+				
+				
+				
+	}	
+}
 	
-	
-	
+/*Affichage*/
+
+void affiche_prev(int* prev,int taille){
+	int i;
+	for (i =1; i <= taille; i++)
+	{
+		printf("%d ",prev[i]);
 	}
+	printf("\n");
+}
+
+void affiche_lambda(double* lambda,int taille){
+	int i;
+	for (i =1; i <= taille; i++)
+	{
+		printf("%f ",lambda[i]);
+	}
+	printf("\n");
 	
+	
+	
+}
 	
 		
-}
