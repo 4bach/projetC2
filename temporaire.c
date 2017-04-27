@@ -1,4 +1,3 @@
-
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <string.h>
@@ -42,15 +41,12 @@ int main(int argc,char* *argv)
   }
   chmeth = atoi(argv[1]);
 
-  char* test1 = "00783_rat";
   char* test1res = "Instances_res/00783_rat.res";
   char* test1cha = "Instances_res/00783_rat.ncha";
 
-  char* test2 = "05934_rl";
   char* test2res = "Instances_res/05934_rl.res";
   char* test2cha = "Instances_res/05934_rl.ncha";
 
-  char* test3 = "07397_pla";
   char* test3res = "Instances_res/07397_pla.res";
   char* test3cha = "Instances_res/07397_pla.ncha";
 
@@ -101,13 +97,13 @@ int main(int argc,char* *argv)
     longueur2 = calcul_longueur( test2cha, &G2 );
     longueur3 = calcul_longueur( test3cha, &G3 );
 
-    eval1 = evaluation_NChaines( gamma1, longueur1, test1 ); 
-    eval2 = evaluation_NChaines( gamma2, longueur2, test2 ); 
-    eval3 = evaluation_NChaines( gamma3, longueur3, test3 ); 
+    eval1 = evaluation_NChaines( gamma1, longueur1, test1cha ); 
+    eval2 = evaluation_NChaines( gamma2, longueur2, test2cha ); 
+    eval3 = evaluation_NChaines( gamma3, longueur3, test3cha ); 
   
-    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test1, eval1, gamma1, longueur1 );
-    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test2, eval2, gamma2, longueur2 );
-    printf( "INSTANCE = %s\n\tEvaluation = %f\n\tGamma = %d\n\tLongueur = %f\n", test3, eval3, gamma3, longueur3 );
+    printf( "Instance = %s, Evaluation = %f, Gamma = %d, Longueur = %f\n", test1cha, eval1, gamma1, longueur1 );
+    printf( "Instance = %s, Evaluation = %f, Gamma = %d, Longueur = %f\n", test2cha, eval2, gamma2, longueur2 );
+    printf( "Instance = %s, Evaluation = %f, Gamma = %d, Longueur = %f\n", test3cha, eval3, gamma3, longueur3 );
   }
   else if( chmeth == 2 ) {
 
@@ -118,3 +114,5 @@ int main(int argc,char* *argv)
         
   return 0;
 }
+int cpt;
+  cpt = nbarcsmin( &G, 10, 15);

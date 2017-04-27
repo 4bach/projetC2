@@ -146,10 +146,16 @@ Liste_chemin* chemin_commodites( Graphe* G )
 }
 
 void ecrire_commodites( Graphe* G, char* nomfic ) 
-{
+{	
+	int cpt;
+  	cpt = nbarcsmin( G, 10, 15);
 	Liste_chemin* liste = chemin_commodites( G );
 	char str[10] = "";
 	FILE* f1;
+	if( ((f1=fopen(nomfic,"r"))!=NULL) ) {
+		remove(nomfic);
+		//return;
+	}
 	if(((f1=fopen(nomfic,"w"))==NULL)){
 		printf("Le fichier %s ne s'ouvre pas\n",nomfic);
 		return;
@@ -165,6 +171,7 @@ void ecrire_commodites( Graphe* G, char* nomfic )
 		fprintf(f1,"-1\n");
 		liste = liste->suiv;
 	}
+	fclose(f1);
 }
 
 
@@ -272,12 +279,13 @@ int calcul_largeur( char* nomfic, Graphe* G )
 			tmp = tmp->suiv;
 		}
 	}
+	fclose(f1);
 	return max;
 }
 
-int calcul_longueur( char* nomfic, Graphe* G ) 
+double calcul_longueur( char* nomfic, Graphe* G ) 
 {
-	int cpt = 0;
+	double cpt = 0;
 	int i;
 	FILE* f1;
 	int sommet1, sommet2;
@@ -307,7 +315,7 @@ int calcul_longueur( char* nomfic, Graphe* G )
 		a = recherche_arrete( G, sommet1, sommet2 );
 		cpt += a->longueur;
 	}
-	
+	fclose(f1);
 	return cpt;
 }
 
