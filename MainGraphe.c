@@ -42,8 +42,12 @@ int main(int argc,char**argv){
   //ecrire_commodites( &G, filenamencha );
 
   int longueur;
-  longueur = calcul_longueur( filenamencha );
+  longueur = calcul_longueur( filenamencha, &G );
   printf( "LONGUEUR = %d\n", longueur );
+  int gamma;
+  gamma = calcul_largeur( filenamencha, &G );
+  printf( "LARGEUR = %d\n", gamma );
+
   //afficheGrapheSVG(&G,filename);
 
 

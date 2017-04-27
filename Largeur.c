@@ -165,121 +165,151 @@ void ecrire_commodites( Graphe* G, char* nomfic )
 		fprintf(f1,"-1\n");
 		liste = liste->suiv;
 	}
-
 }
 
 
-/*int calcul_longueur( char* nomfic ) 
+/*int calcul_longueur( Graphe* G ) 
 {
+	int i;
 	int cpt = 0;
-	int nbligne = 0;
-	int tmp = 1;
-	int boole = 1;
-	FILE* f1;
+	for( i = 1; i < G->nbsom; i++ ) {
 
-	if(((f1=fopen(nomfic,"r"))==NULL)){
-		printf("Le fichier %s n'existe pas\n",nomfic);
-		return 0;
-	}
-
-	while( tmp ) {
-		tmp = GetEntier( f1 );
-		printf( "TMP = %d, CPT = %d, NBLIGNE = %d\n", tmp, cpt, nbligne );
-		if( tmp == -1 ) {
-			SkipLine( f1 );
-			nbligne++;
+		Cellule_arete* tmp = G->T_som[i]->L_voisin;
+		while( tmp ) {
+			cpt+= tmp->a->longueur;
+			tmp = tmp->suiv;
 		}
-		else {
-			Skip( f1 );
-			cpt++;
-		}
-		printf( "TMP = %d, CPT = %d, NBLIGNE = %d\n", tmp, cpt, nbligne );
-
 	}
-	return cpt - nbligne;
+	return cpt/2;
 }*/
 
-int est_pas_dans_liste(  Cellule_arete* arete, Arete* a ) {
 
-	if( arete == NULL ) return 1;
-	Cellule_arete* tmp = arete;
 
-	while( tmp ) {
-		if( (a->u == arete->a->u && a->v == arete->a->v ) || (a->v == arete->a->u && a->u == arete->a->v))
-			return 0;
-		tmp = tmp->suiv;
-	}
-	return 1;
-}
-int calcul_longueur( char* nomfic ) 
+/*int calcul_largeur( Graphe* G ) 
 {
-	int cpt = 0;
-	int nbligne = 0;
-	int tmp = 1;
+
+	int i;
+	int max = 0;
+
+	for( i = 1; i < G->nbsom; i++ ) {
+		Cellule_arete* tmp = G->T_som[i]->L_voisin;
+		while( tmp ) {
+			tmp->a->calc_gamma++;
+			tmp = tmp->suiv;
+		}
+	}
+
+	for( i = 1; i < G->nbsom; i++ ) {
+		Cellule_arete* tmp = G->T_som[i]->L_voisin;
+		while( tmp ) {
+			if( tmp->a->calc_gamma > max ) max = tmp->a->calc_gamma;
+			tmp = tmp->suiv;
+		}
+	}
+	return max;
+}*/
+
+//peut etre fait de maniere bcp + rapide -> on cherche un des points dans le tableau, puis on cherche l'autre dans ses voisins
+Arete* recherche_arrete( Graphe* G, int u, int v ) {
+	int i;
+	Arete* a;
+	for( i = 1; i < G->nbsom+1; i++ ) {
+		//printf( "i = %d \n", i );
+		Cellule_arete* tmp = G->T_som[i]->L_voisin;
+		while( tmp ) {
+			//printf( "U = %d, V = %d, AU = %d, AV = %d\n", u, v, tmp->a->u, tmp->a->v );
+			if( ( (tmp->a->u == u ) && ( tmp->a->v == v)) || ((tmp->a->v == u ) && (tmp->a->u == v) ) )
+				return tmp->a;
+			tmp = tmp->suiv;
+		}
+	}
+	return NULL;
+}
+
+int calcul_largeur( char* nomfic, Graphe* G ) 
+{
+	int max = 0;
+	int i;
 	FILE* f1;
-
 	int sommet1, sommet2;
-
+	Arete* a;
 	
 	if(((f1=fopen(nomfic,"r"))==NULL)){
 		printf("Le fichier %s n'existe pas\n",nomfic);
 		return 0;
 	}
-
+	
 	sommet1 = GetEntier( f1 );
+	//printf( "sommet 1 = %d \n", sommet1 );
 	Skip( f1 );
 	sommet2 =  GetEntier( f1 );
+	//printf( "sommet 2 = %d \n", sommet2 );
+	a = recherche_arrete( G, sommet1, sommet2 );
+	a->calc_gamma++;
 
-	Cellule_arete* arete = malloc( sizeof( Cellule_arete ) );
-	arete->suiv = NULL;
-	arete->a = malloc( sizeof( Arete ) );
-	arete->a->u = sommet1;
-	arete->a->v = sommet2;
-
-
-	while( sommet1 ) {
-		
+	while( sommet2 != 0 ) {
 		sommet1 = sommet2;
 		Skip( f1 );
 		sommet2 = GetEntier( f1 );
+		//printf( "sommet 1 = %d \n", sommet1 );
+		//printf( "sommet 2 = %d \n", sommet2 );
 		//printf( "sommet1 = %d, sommet2 = %d\n", sommet1, sommet2 );
-		if( sommet1 == - 1 || sommet2 == -1 ) {
+		if( sommet2 == -1 ) {
+			SkipLine( f1 );
+			//printf("\n");
+			continue;
+		} else if( sommet1 == -1 ) continue;
+		//printf( "S1 = %d, S2 = %d ||", sommet1, sommet2 );
+		a = recherche_arrete( G, sommet1, sommet2 );
+		a->calc_gamma++;
+		
+	}
+	for( i = 1; i < G->nbsom; i++ ) {
+		//printf( "i = %d \n", i );
+		Cellule_arete* tmp = G->T_som[i]->L_voisin;
+		while( tmp ) {
+			if( tmp->a->calc_gamma > max ) max = tmp->a->calc_gamma;
+			tmp = tmp->suiv;
+		}
+	}
+	return max;
+}
+
+int calcul_longueur( char* nomfic, Graphe* G ) 
+{
+	int cpt = 0;
+	int i;
+	FILE* f1;
+	int sommet1, sommet2;
+	Arete* a;
+	
+	if(((f1=fopen(nomfic,"r"))==NULL)){
+		printf("Le fichier %s n'existe pas\n",nomfic);
+		return 0;
+	}
+	
+	sommet1 = GetEntier( f1 );
+	Skip( f1 );
+	sommet2 =  GetEntier( f1 );
+	a = recherche_arrete( G, sommet1, sommet2 );
+
+	while( sommet2 != 0 ) {
+
+		sommet1 = sommet2;
+		Skip( f1 );
+		sommet2 = GetEntier( f1 );
+
+		if( sommet2 == -1 ) {
 			SkipLine( f1 );
 			continue;
-		}
-		
-		Arete* a = malloc( sizeof( Arete ) );
-		a->u = sommet1;
-		a->v = sommet2;
+		} else if( sommet1 == -1 ) continue;
 
-		if( est_pas_dans_liste(  arete, a )  ) {
-			printf( "sommet1 = %d, sommet2 = %d\n", sommet1, sommet2 );
-			Cellule_arete* tmp = malloc( sizeof( Cellule_arete ) );
-			tmp->a = a;
-			tmp->suiv = arete;
-			arete = tmp;
-		}
-		
+		a = recherche_arrete( G, sommet1, sommet2 );
+		cpt += a->longueur;
 	}
-	while( arete ) {
-		cpt++;
-		arete =  arete->suiv;
-	}
+	
 	return cpt;
 }
-
-int calcul_largeur( char* nomfic ) {
-		
-
-	return 0;
-}
-
-
-
-
-
-
-
 
 
 

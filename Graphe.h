@@ -10,7 +10,6 @@ typedef struct{
 
  /**************************************************/
  /* Emplacement des donnees utiles aux algorithmes */
-
   int calc_gamma; 
 
  /**************************************************/
