@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include  <stdio.h>
+#include  <stdlib.h>
+#include  <string.h>
 #include "Graphe.h"
+#include "Largeur.h"
 #include "Struct_Liste.h"
 
 int main(int argc,char**argv){
@@ -34,13 +35,9 @@ int main(int argc,char**argv){
   lecture_graphe(&G,f);
 
   fclose(f);
-	int prev[G.nbsom];
-	double lambda[G.nbsom];
-	Dijkstra(G,1,prev,lambda);
-  afficheGrapheSVG(&G,filename);
-  
-  
-  
+  int cpt;
+  printf("LE PLUS COURT CHEMIN EST : %d\n", cpt );
+  cpt = nbarcsmin( &G, 14, 15);
 
 
   return 0;

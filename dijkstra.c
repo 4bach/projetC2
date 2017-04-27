@@ -244,6 +244,7 @@ void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 				
 	}	
 }
+
 	
 /*Affichage*/
 
@@ -264,6 +265,7 @@ void affiche_lambda(double* lambda,int taille){
 	}
 	printf("\n");
 	
+
 	
 	
 }

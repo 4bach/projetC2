@@ -66,6 +66,4 @@ void affichageGrapheSVG(Graphe *G, char* nomInstance);
 
 
 
-
-
 #endif

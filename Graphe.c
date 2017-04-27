@@ -5,6 +5,9 @@
 #include "SVGwriter.h"
 #include "entree_sortie.h"
 #include "Struct_Liste.h"
+#include "Struct_File.h"
+
+
 
 
 
@@ -15,6 +18,9 @@ void ajout_voisin(Graphe* G, int u, int v){
   pa=(Arete *) malloc(sizeof(Arete));
   pa->u=u;
   pa->v=v;
+
+  pa->calc_gamma = 0;
+
   pa->longueur=sqrt( (G->T_som[u]->x - G->T_som[v]->x)*(G->T_som[u]->x - G->T_som[v]->x) + (G->T_som[u]->y - G->T_som[v]->y)*(G->T_som[u]->y - G->T_som[v]->y));
 
   pca=(Cellule_arete*) malloc(sizeof(Cellule_arete));
@@ -137,5 +143,4 @@ void afficheGrapheSVG(Graphe *G, char* nomInstance){
   SVGfinalize(&svg);
 
 }
-
 
