@@ -37,13 +37,14 @@ void monter(Tas* t,int i);
 int plusPetitfils(Tas* t,int i);
 void descendre(Tas* t,int i);
 Tas_elem* min(Tas* t);
-void insert(Tas *t,float dist,int s);
+void insert(Tas *t,double dist,int s);
 Tas_elem* suppMin(Tas* t);
 int recherche(Tas* t,int s);
 void supp_elem(Tas*t, int i);
-void init_lambda(int taille,double* lambda);
+void init_lambda(int taille,double* lambda,int s);
 void init_pred(int taille,int* pred);
 void init_marque(int taille,int* marque);
-
+void init_tab_som(Tas* t);
+int Tasvide(Tas* t);
 void Dijkstra(Graphe* G,int u,int* prev,double* lambda);
 #endif

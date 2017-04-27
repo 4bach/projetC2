@@ -38,7 +38,8 @@ Tas* init_tas(int n){
 	t->nb_tot=n;
 	t->nb_elem=0;
 	t->elem=NULL;
-	t->tab=(int*)malloc(n*sizeof(int));
+	t->tab=(int*)malloc((n+1)*sizeof(int));
+	init_tab_som(t);
 	return t;
 }
 int taille(Tas* t){
@@ -66,10 +67,14 @@ void echanger(Tas* t, int i,int j){
 	
 	double tmp=t->elem[i]->dist;
 	int Tmp=t->elem[i]->u;
+	/* maj du tableau de sommet*/
+	int temp=t->tab[Tmp];
+	t->tab[Tmp]=t->tab[t->elem[j]->u];
+	t->tab[t->elem[j]->u]=temp;
+	/*.........*/
 	t->elem[i]->dist=t->elem[j]->dist;
 	t->elem[i]->u=t->elem[j]->u;
 	t->elem[j]->dist=tmp;
-	
 	t->elem[j]->u=Tmp;
 }
 
@@ -93,6 +98,12 @@ int plusPetitfils(Tas* t,int i){
 	}
 	
 }
+
+int Tasvide(Tas* t){
+	
+	return t->nb_elem==0;
+}
+
 void descendre(Tas* t,int i){
 	if(Estfeuille(t,i))return;
 	
@@ -107,12 +118,16 @@ Tas_elem* min(Tas* t){
 	return t->elem[racine()];
 }
 
-void insert(Tas *t,float dist,int s){
+void insert(Tas *t,double dist,int s){
 	if (t->nb_elem<t->nb_tot){
 		t->nb_elem++;
-		t->elem[t->nb_elem]->dist=dist;
-		t->elem[t->nb_elem]->u=s;
+		Tas_elem* elem=(Tas_elem*)malloc(sizeof(Tas_elem));
+		elem->u=s;
+		elem->dist=dist;
+		t->elem[t->nb_elem]=elem;
+		t->tab[s]=t->nb_elem;
 		monter(t,t->nb_elem);
+		t->nb_elem++;
 	}
 	else{
 		printf("tas plein\n");
@@ -145,21 +160,21 @@ void supp_elem(Tas*t, int i){
 
 /*ALGO DIJKSTRA*/
 
-void init_lambda(int taille,double* lambda){
+void init_lambda(int taille,double* lambda,int s){
 	
 	int i;
-	
-	for (i = 0; i < taille; i++)
+	for (i = 1; i <= taille; i++)
 	{
 		lambda[i]= DBL_MAX;
 		
 	}
+	lambda[s]=0;
 }
 
 void init_pred(int taille,int* pred){
 	
 	int i;
-	for (i = 0; i < taille; i++)
+	for (i = 1; i <= taille; i++)
 	{
 		pred[i]=-1;
 	}
@@ -167,23 +182,40 @@ void init_pred(int taille,int* pred){
 }
 void init_marque(int taille,int* marque){
 	int i;
-	for (i = 0; i < taille; i++)
+	for (i = 1; i <= taille; i++)
 	{
 		marque[i]=0;
 	}
 	
 }
-	
+void init_tab_som(Tas* t){
+	int taille= t->nb_tot;
+	int i;
+	for (i = 1; i <=taille; i++)
+	{
+		t->tab[i]=-1;
+	}
+}
 
 
 void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 	/*initialistation*/
 	
-	init_lambda(G->nbsom,lambda);
+	init_lambda(G->nbsom,lambda,u);
 	int marque[G->nbsom];
 	init_marque(G->nbsom,marque);
 	init_pred(G->nbsom,prev);
 	Tas* t=init_tas(G->nbsom);
+	Tas_elem* min;
+	insert(t,0,u);
+	marque[u]=1;
+	while(! Tasvide(t)){
+		min=suppMin(t);
+		marquer[min->u]=1;
+	
+	
+	
+	}
 	
 	
 		
