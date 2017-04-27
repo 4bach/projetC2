@@ -1,5 +1,3 @@
-
-
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <string.h>
@@ -37,24 +35,9 @@ int main(int argc,char**argv){
   lecture_graphe(&G,f);
 
   fclose(f);
-
-  afficheGrapheSVG(&G,filename);
-
   int cpt;
-  cpt = nbarcsmin( &G, 10, 15);
-  ListeEntier chemin = cheminuv( &G, 3, 16 );
-  Liste_chemin* tmp = chemin_commodites( &G );
-  //ecrire_commodites( &G, filenamencha );
-
-  int longueur;
-  longueur = calcul_longueur( filenamencha, &G );
-  printf( "LONGUEUR = %d\n", longueur );
-  int gamma;
-  gamma = calcul_largeur( filenamencha, &G );
-  printf( "LARGEUR = %d\n", gamma );
-
-  //afficheGrapheSVG(&G,filename);
-
+  printf("LE PLUS COURT CHEMIN EST : %d\n", cpt );
+  cpt = nbarcsmin( &G, 14, 15);
 
 
   return 0;

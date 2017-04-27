@@ -209,6 +209,7 @@ void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 	Tas_elem* min;
 	insert(t,0,u);
 	marque[u]=1;
+
 	/*......*/
 	Sommet* courant_som;
 	Cellule_arete* courant_a;
@@ -246,4 +247,3 @@ void Dijkstra(Graphe* G,int u,int* prev,double* lambda){
 	
 	
 		
-
