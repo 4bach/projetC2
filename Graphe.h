@@ -10,7 +10,6 @@ typedef struct{
 
  /**************************************************/
  /* Emplacement des donnees utiles aux algorithmes */
-
   int calc_gamma; 
 
  /**************************************************/
@@ -63,8 +62,6 @@ Arete* acces_arete(Graphe* G, int u, int v);
 void lecture_graphe(Graphe *G, FILE * f);
 
 void affichageGrapheSVG(Graphe *G, char* nomInstance);
-
-
 
 
 
